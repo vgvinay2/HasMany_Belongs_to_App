@@ -1,0 +1,113 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides: thin
+# Required-Start: $local_fs $remote_fs
+# Required-Stop: $local_fs $remote_fs
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: thin initscript
+# Description: thin
+### END INIT INFO
+
+# based on http://gist.github.com/308216 by http://github.com/mguterl
+#
+## A sample /etc/unicorn/my_app.conf
+##
+## RAILS_ENV=production
+## RAILS_ROOT=/var/apps/www/my_app/current
+
+# set -xv
+
+sig () {
+  test -s "$PID" && kill -$1 `cat "$PID"`
+}
+
+oldsig () {
+  test -s "$OLD_PID" && kill -$1 `cat "$OLD_PID"`
+}
+
+cmd () {
+
+  case $1 in
+    start)
+      sig 0 && echo >&2 "Already running" && exit 0
+      echo "Starting"
+      $CMD
+      ;;
+    stop)
+      sig QUIT && echo "Stopping" && exit 0
+      echo >&2 "Not running"
+      ;;
+    force-stop)
+      sig TERM && echo "Forcing a stop" && exit 0
+      echo >&2 "Not running"
+      ;;
+    restart|reload)
+#      sig USR2 && sleep 5 && oldsig QUIT && echo "Killing old master" `cat $OLD_PID` && exit 0
+#      echo >&2 "Couldn't reload, starting '$CMD' instead"
+       echo "We have restricted the restart | reload command for unicorn.Please use the stop && start command"
+#      $CMD
+      ;;
+    upgrade)
+      sig USR2 && echo Upgraded && exit 0
+      echo >&2 "Couldn't upgrade, starting '$CMD' instead"
+      $CMD
+      ;;
+    rotate)
+            sig USR1 && echo rotated logs OK && exit 0
+            echo >&2 "Couldn't rotate logs" && exit 1
+            ;;
+    *)
+      echo >&2 "Usage: $0 <start|stop|restart|upgrade|rotate|force-stop>"
+      exit 1
+      ;;
+    esac
+}
+
+setup () {
+  echo -n "$RAILS_ROOT: "
+  cd $RAILS_ROOT || exit 1
+  if [ -z $PID ]; then
+PID=$RAILS_ROOT/tmp/pids/unicorn.pid
+  fi
+export PID
+  export OLD_PID="$PID.oldbin"
+  export RAILS_ROOT
+
+# /opt/ruby/CMS/CMS_Admin
+# unicorn_rails -c config/unicorn.rb -E production -D
+
+  CMD="unicorn_rails -c $UNICORN_CONFIG -E $RAILS_ENV -D"
+#  echo $CMD
+}
+
+start_stop () {
+
+  # either run the start/stop/reload/etc command for every config under /etc/unicorn
+  # or just do it for a specific one
+
+  # $1 contains the start/stop/etc command
+  # $2 if it exists, should be the specific config we want to act on
+  if [ -f "/etc/unicorn/$2.conf" ]; then
+    #. /etc/unicorn/$2.conf
+    #export UNICORN_CONFIG="/etc/unicorn/$2.unicorn.rb"
+    export CONFIG="/etc/unicorn/$2.conf"
+    . $CONFIG
+    setup
+    cmd $1
+  else
+for CONFIG in /etc/unicorn/*.conf; do
+      # import the variables
+ #     export UNICORN_CONFIG="$RAILS_ROOT/config/unicorn.rb"
+      . $CONFIG
+      setup
+#      export UNICORN_CONFIG=$RAILS_ROOT/config/unicorn.rb
+
+      # run the start/stop/etc command
+      cmd $1
+    done
+fi
+}
+
+ARGS="$1 $2"
+start_stop $ARGS
