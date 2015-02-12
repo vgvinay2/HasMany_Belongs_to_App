@@ -1,10 +1,9 @@
-<p id="notice"><%= notice %></p>
-<%  @orders.each do |a| %>
+<p id="notice"><%= notice %>
+</p>
+<p>
+  <strong>Name:</strong>
+  <%= @order.name %>
+</p>
 
-    <%= a.name %> </br>
-
-<% end %>
-
-
-<%= link_to 'Edit', edit_customer_order(@order) %>
-<%= link_to 'Back', orders_path %>
+<%= link_to 'Edit', edit_customer_order_path(@customer.id, @order.id) %>
+<%= link_to 'Back', customer_orders_path %>

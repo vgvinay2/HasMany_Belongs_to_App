@@ -23,7 +23,7 @@ class CustomersController < ApplicationController
   # POST /customers
   # POST /customers.json
   def create
-    @customer = Customer.new(customers_params)
+    @customer = Customer.new(customer_params)
     @customer.save
     redirect_to @customer
   end
@@ -55,14 +55,12 @@ class CustomersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_customer
-      ActionDispatch::Http::UploadedFile:0x000000054c3600
       @customer = Customer.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
 
-  def customers_params
-    debugger
-   params.required(:customer).permit(:name, :address, :city, :status)
+  def customer_params
+    params.required(:customer).permit(:name, :address, :city, :status)
   end
 end

@@ -4,31 +4,35 @@ class OrdersController < ApplicationController
   # GET /orders
   # GET /orders.json
   def index
+    @customer = Customer.find(params[:customer_id])
     @orders = Order.all
   end
 
   # GET /orders/1
   # GET /orders/1.json
   def show
-    @costomer = Customer.find(show_customer_params)
-    @orders = @costomer.orders
+    @customer = Customer.find(params[:customer_id])
+    @order = Order.find(params[:id])
   end
 
   # GET /orders/new
   def new
-    @order = Order.new
+    @customer = Customer.find(params[:customer_id])
+    @order = @customer.orders.build
   end
 
   # GET /orders/1/edit
   def edit
+    @customer = Customer.find(params[:customer_id])
   end
 
   # POST /orders
   # POST /orders.json
   def create
-    @order = Order.new(order_params)
+    @customer = Customer.find(params[:customer_id])
+    @order = @customer.orders.build(order_params)
     @order.save
-    redirect_to :controller => 'orders', :action => 'show', :id =>@order.customer_id
+    redirect_to customer_order_path(@customer.id, @order.id)
   end
 
   # PATCH/PUT /orders/1
@@ -62,7 +66,7 @@ class OrdersController < ApplicationController
     end
 
    def order_params
-      params.required(:order).permit(:name, :customer_id)
+      params.required(:order).permit(:name)
    end
 
    def show_customer_params
