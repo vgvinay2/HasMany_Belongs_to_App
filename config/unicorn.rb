@@ -18,4 +18,3 @@ end
 
 stderr_path "/home/vinay/Desktop/Example/modeldemo/log/unicorn_err.log"
 stdout_path "/home/vinay/Desktop/Example/modeldemo/log/unicorn_out.log"
-
