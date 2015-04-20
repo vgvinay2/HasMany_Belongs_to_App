@@ -1,6 +1,6 @@
 <h1>Listing orders</h1>
 
-<table>
+<table class='table table-bordered'>
   <thead>
     <tr>
       <th>Name</th>
@@ -10,14 +10,13 @@
     </tr>
   </thead>
 
-  <tbody>
+  <tbody class='table-striped'>
     <% @orders.each do |order| %>
       <tr>
         <td><%= order.name %></td>
         <td><%= link_to 'Show', customer_order_path(@customer.id ,order.id) %></td>
         <td><%= link_to 'Edit', edit_customer_order_path(@customer.id ,order.id) %></td>
-        <td><%= link_to 'Destroy', customer_order_path(@customer.id, order.id
-                                 ), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Destroy', customer_order_path(@customer.id, order.id), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
