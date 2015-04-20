@@ -12,7 +12,7 @@ gem 'unicorn'
 #  gem 'guard-spork'
 #end
 
-
+gem 'acts_as_tree', '~> 2.1.0'
 #gem 'bitly'
 # Use sqlite3 as the database for Active Record
 gem "pg", "~> 0.17.1"
@@ -34,7 +34,7 @@ gem 'jquery-rails'
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'
-
+gem 'bootstrap'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 1.2'
 gem 'capistrano'

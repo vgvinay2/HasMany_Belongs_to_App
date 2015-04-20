@@ -1,6 +1,6 @@
 <h1>Listing customers</h1>
 
-<table border="2x">
+<table class='table table-bordered'>
   <thead>
     <tr>
       <th>Name</th>
@@ -14,13 +14,13 @@
     </tr>
   </thead>
 
-  <tbody>
+  <tbody class='table-striped'>
     <% @customers.each do |customer| %>
       <tr>
         <td><%= customer.name %></td>
         <td><%= customer.address %></td>
         <td><%= customer.city %></td>
-        <td><%= link_to 'Show', customer %></td>
+        <td><%= link_to 'Show', customer,html_options = {class: 'active'} %></td>
         <td><%= link_to 'Edit', edit_customer_path(customer) %></td>
         <td><%= link_to 'Destroy', customer, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <td><%= link_to 'Create order', new_customer_order_path(customer) %></td>
