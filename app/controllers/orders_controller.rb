@@ -19,14 +19,16 @@ class OrdersController < ApplicationController
   end
 
   def create
-    @order = @customer.orders.build(order_params)
+    @order = @customer.orders.new(order_params)
     @order.save
-    redirect_to customer_order_path(@customer.id, @order.id)
+    redirect_to [@customerd, @order]
   end
 
   def update
-    if @order.update(order_params)
-      redirect_to @order, notice: 'Order was successfully updated.'
+   @order = @customer.orders.find(params[:id])
+   @order = @order.update(order_params)
+    if @order
+      redirect_to customer_order_path(@order), notice: 'Order was successfully updated.'
     else
       render action: 'edit'
     end
@@ -49,10 +51,6 @@ class OrdersController < ApplicationController
 
   def order_params
     params.required(:order).permit(:name)
-  end
-
-  def show_customer_params
-    params.required(:id)
   end
 
 end
