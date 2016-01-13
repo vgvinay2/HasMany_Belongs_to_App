@@ -14,9 +14,9 @@
     <% @orders.each do |order| %>
       <tr>
         <td><%= order.name %></td>
-        <td><%= link_to 'Show', customer_order_path(@customer.id ,order.id) %></td>
-        <td><%= link_to 'Edit', edit_customer_order_path(@customer.id ,order.id) %></td>
-        <td><%= link_to 'Destroy', customer_order_path(@customer.id, order.id), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Show', customer_order_path(@customer.id ,order) %></td>
+        <td><%= link_to 'Edit', edit_customer_order_path(@customer.id ,order) %></td>
+        <td><%= link_to 'Destroy', [@customer, order], method: :delete %></td>
       </tr>
     <% end %>
   </tbody>
@@ -24,4 +24,4 @@
 
 <br>
 
-<%= link_to 'New Order', new_customer_order_path(@customer.id) %>
+<%= link_to 'New Order', new_customer_order_path(@customer) %>
