@@ -4,7 +4,7 @@ class OrdersController < ApplicationController
   before_action :get_customer
 
   def index
-    @orders = @customer.orders
+    @orders = @customer.orders.search(params[:keyword])
   end
 
   def show
