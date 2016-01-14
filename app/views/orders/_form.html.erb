@@ -2,7 +2,6 @@
     <% if @order.errors.any? %>
         <div id="error_explanation">
           <h2><%= pluralize(@order.errors.count, "error") %> prohibited this order from being saved:</h2>
-
           <ul>
             <% @order.errors.full_messages.each do |msg| %>
                 <li><%= msg %></li>
@@ -15,7 +14,9 @@
       <%= f.label :name %><br>
       <%= f.text_field :name %>
     </div>
+
     <div class="actions">
-      <%= f.submit("Save ") %>
+      <%= f.submit class: "btn btn-success" %><br>
     </div>
+
 <% end %>

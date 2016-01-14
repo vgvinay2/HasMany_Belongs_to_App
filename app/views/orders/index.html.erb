@@ -1,9 +1,20 @@
 <h1>Listing orders</h1>
 
+<form role="search" style="width: 15em; margin: 0.3em 2em;float: right">
+  <div class="input-group">
+    <input type='text' class='form-control' value='<%= params[:keyword] %>' name='keyword' placeholder='Keyword' >
+    <div class="input-group-btn">
+      <button type="submit" class="btn btn-default">
+        <span class="glyphicon glyphicon-search"></span>
+      </button>
+    </div>
+  </div>
+</form>
+
 <table class='table table-bordered'>
   <thead>
   <tr>
-    <th>Name</th>
+    <th>Order Name</th>
     <th></th>
     <th></th>
     <th></th>
@@ -14,9 +25,17 @@
   <% @orders.each do |order| %>
       <tr>
         <td><%= order.name %></td>
-        <td><%= link_to 'Show', customer_order_path(@customer.id ,order) %></td>
-        <td><%= link_to 'Edit', edit_customer_order_path(@customer.id ,order) %></td>
-        <td><%= link_to 'Destroy', [@customer, order], method: :delete %></td>
+        <!--Remember the brackets is an array of the nested records, which is then "processed"
+        by Rails to compute a path for all the given nested records (according to your routes).
+        In this case the first element of the array is a Project, second a Thread and third an Attachment.
+        Rails "guess" that an Attachment belongs to a Thread which belongs to a Project,
+        computing a path with these nested records: project, then thread, then attachment,
+        which leads to the helper : project_thread_attachment_path-->
+        <td><%= link_to 'Show', customer_order_path(@customer ,order), class: "btn btn-info" %></td>
+        <td><%= link_to 'Edit', edit_customer_order_path(@customer ,order), class: "btn btn-warning"  %></td>
+        <td><%= link_to 'Destroy', [@customer, order], method: :delete,
+                        data: { confirm: 'Are you sure?' },
+                        class: "btn btn-danger" %></td>
       </tr>
   <% end %>
   </tbody>
@@ -24,4 +43,4 @@
 
 <br>
 
-<%= link_to 'New Order', new_customer_order_path(@customer) %>
+<%= link_to 'New Order', new_customer_order_path(@customer), class: "btn btn-info" %>

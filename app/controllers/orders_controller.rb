@@ -20,23 +20,26 @@ class OrdersController < ApplicationController
 
   def create
     @order = @customer.orders.new(order_params)
-    @order.save
-    redirect_to [@customerd, @order]
+    if @order.save
+       redirect_to [@customer, @order], notice: 'Order was successfully created.'
+    else
+      render action: 'new'
+    end
   end
 
   def update
-   @order = @customer.orders.find(params[:id])
-   @order = @order.update(order_params)
-    if @order
-      redirect_to customer_order_path(@order), notice: 'Order was successfully updated.'
+    @order = @customer.orders.find(params[:id])
+    if @order.update(order_params)
+      redirect_to [@customer, @order], notice: 'Order was successfully updated.'
     else
       render action: 'edit'
     end
   end
 
   def destroy
+    @order = @customer.orders.find(params[:id] )
     @order.destroy
-    redirect_to orders_url
+    redirect_to customer_orders_path, notice: 'Order was successfully destroyed.'
   end
 
   def get_customer
