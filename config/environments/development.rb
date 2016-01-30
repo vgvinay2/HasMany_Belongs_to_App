@@ -9,6 +9,13 @@ Modeldemo::Application.configure do
   # Do not eager load code on boot.
   config.eager_load = false
 
+  config.console do
+    # this block is called only when running console,
+    # so we can safely require pry here
+    require "pry"
+    config.console = Pry
+  end
+
   # Show full error reports and disable caching.
   config.consider_all_requests_local       = true
   config.action_controller.perform_caching = false
