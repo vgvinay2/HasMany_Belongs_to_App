@@ -13,7 +13,8 @@ gem 'jbuilder', '~> 1.2'
 gem 'capistrano'
 gem 'capistrano-bundler'
 gem 'capistrano-rails'
-gem 'pry'
+gem 'debugger'
+gem 'dalli'
 group :doc do
   gem 'sdoc', require: false
 end

@@ -4,6 +4,7 @@ class CustomersController < ApplicationController
 
   def index
     @customers = Customer.search(params[:keyword])
+    fresh_when(@customers)
   end
 
   def show
@@ -50,3 +51,6 @@ class CustomersController < ApplicationController
   end
 
 end
+
+
+
